@@ -1,8 +1,16 @@
 import { Pool } from 'pg';
-import { config } from 'dotenv'; // Use named import
+import dotenv from 'dotenv';
 
-config(); // Call the config function to load environment variables
+dotenv.config();
 
-export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+// Parse the DATABASE_URL
+const connectionString = process.env.DATABASE_URL;
+
+const pool = new Pool({
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false, // Required for Supabase
+  },
 });
+
+export default pool;
