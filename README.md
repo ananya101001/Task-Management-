@@ -64,7 +64,7 @@ CREATE TABLE tasks (
 
 2. You need to provide the environment variable
 touch .env
-# Database Configuration
+**Database Configuration**
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
