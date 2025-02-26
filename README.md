@@ -98,5 +98,6 @@ This will start the development server and open the application in your default 
 =======================================
 
 Short Video Demo:
-[![Video Watch the demo video]https://drive.google.com/file/d/1YYbv64tyDgRyTV8pOKGHKU-QJScuoaB6/view?usp=drive_link
-![Demo Video](video-preview.gif)](https://drive.google.com/file/d/1YYbv64tyDgRyTV8pOKGHKU-QJScuoaB6/view?usp=drive_link)
+
+[![Video Title](https://drive.google.com/file/d/1YYbv64tyDgRyTV8pOKGHKU-QJScuoaB6/view?usp=drive_link)
+
