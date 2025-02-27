@@ -7,7 +7,11 @@ dotenv.config();
 const connectionString = process.env.DATABASE_URL;
 
 export const pool = new Pool({
-  connectionString,
+  user: 'postgres',
+  host: 'db.jniuqtxxemrvjnpbhopt.supabase.co', // Use a valid hostname or IPv4 address
+  database: 'postgres',
+  password: 'Grep{!8923!}',
+  port: 5432,
   ssl: {
     rejectUnauthorized: false, // Required for Supabase
   },
