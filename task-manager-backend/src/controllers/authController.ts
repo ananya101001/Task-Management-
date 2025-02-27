@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs'; // Use bcryptjs instead of bcrypt
 import jwt from 'jsonwebtoken';
 import { pool } from '../db/db';
 
@@ -53,7 +53,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     // Generate a JWT token
     const token = jwt.sign(
-      { userId: user.id, username: user.username, email: user.email }, // Use `id` instead of `userId`
+      { userId: user.id, username: user.username },
       process.env.JWT_SECRET!,
       { expiresIn: '1h' }
     );
