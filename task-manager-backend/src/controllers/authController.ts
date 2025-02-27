@@ -32,6 +32,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response): Promise<void> => {
+  console.log('reached here')
   const { username, password } = req.body;
 
   try {
