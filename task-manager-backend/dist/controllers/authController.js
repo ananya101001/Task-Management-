@@ -32,6 +32,7 @@ const register = async (req, res) => {
 };
 exports.register = register;
 const login = async (req, res) => {
+    console.log('reached here');
     const { username, password } = req.body;
     try {
         // Check if the user exists in the database
