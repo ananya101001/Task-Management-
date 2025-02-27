@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
+const bcrypt = require('bcryptjs');;
 import jwt from 'jsonwebtoken';
 import { pool } from '../db/db';
 
@@ -15,8 +15,8 @@ export const register = async (req: Request, res: Response) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
     // Insert the new user into the database
     const result = await pool.query(
       'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *',
