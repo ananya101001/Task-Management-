@@ -1,4 +1,3 @@
-// src/routes/taskRoutes.ts
 import express from 'express';
 import { getTasks, createTask, updateTask, deleteTask } from '../controllers/taskController';
 import { authenticateUser } from '../middleware/authMiddleware';
