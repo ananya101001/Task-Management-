@@ -44,7 +44,10 @@ const register = async (req, res) => {
     try {
         const { username, password } = req.body;
         // Check if the username already exists
-        const userExists = await db_1.pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        // Await the pool promise
+        const resolvedPool = await db_1.pool;
+        const client = await resolvedPool.connect();
+        const userExists = await client.query('SELECT * FROM users WHERE username = $1', [username]);
         if (userExists.rows.length > 0) {
             res.status(400).json({ message: 'Username already exists' });
             return;
@@ -52,7 +55,7 @@ const register = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
         // Insert the new user into the database
-        const result = await db_1.pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
+        const result = await client.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
         // Return the newly created user
         res.status(201).json(result.rows[0]);
     }
@@ -65,8 +68,10 @@ exports.register = register;
 const login = async (req, res) => {
     const { username, password } = req.body;
     try {
+        const resolvedPool = await db_1.pool;
+        const client = await resolvedPool.connect();
         // Check if the user exists in the database
-        const result = await db_1.pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        const result = await client.query('SELECT * FROM users WHERE username = $1', [username]);
         const user = result.rows[0];
         if (!user) {
             res.status(401).json({ message: 'Username not found' });

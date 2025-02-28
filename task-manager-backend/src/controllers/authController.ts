@@ -3,7 +3,7 @@ import * as bcrypt from 'bcryptjs'; // Use bcryptjs instead of bcrypt
 import jwt from 'jsonwebtoken';
 import { pool } from '../db/db';
 
-const client = await (await pool).connect(); 
+
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -11,6 +11,9 @@ export const register = async (req: Request, res: Response) => {
 
     // Check if the username already exists
     // Await the pool promise
+    const resolvedPool = await pool;
+    const client = await resolvedPool.connect();
+   
     const userExists = await client.query('SELECT * FROM users WHERE username = $1', [username]);
 
     if (userExists.rows.length > 0) {
@@ -39,6 +42,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   try {
+
+    const resolvedPool = await pool;
+const client = await resolvedPool.connect();
     
     // Check if the user exists in the database
     const result = await client.query('SELECT * FROM users WHERE username = $1', [username]);
