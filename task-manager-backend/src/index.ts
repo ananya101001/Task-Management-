@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json()); // Add this line to parse JSON bodies
 
 app.use(cors({
-  origin: ['https://task-management-lemon-xi.vercel.app/','http://localhost:3000'],
+  origin: ['https://task-management-rho-teal.vercel.app/','http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
