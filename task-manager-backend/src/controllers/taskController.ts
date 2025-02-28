@@ -3,22 +3,15 @@ import { Response } from 'express';
 import { pool } from '../db/db';
 import { AuthRequest } from '../types/express';
 
-export const getTasks = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getTasks = async (req: Request, res: Response) => {
   try {
-    if (!req.user) {
-      res.status(401).json({ message: 'Unauthorized' });
-      return;
-    }
-   
-    const userId = req.user.id;
-    
-    console.log('Fetching tasks for user ID:', userId);
-    const result = await pool.query('SELECT * FROM tasks WHERE user_id = $1', [userId]);
-    // const result = await pool.query('SELECT * FROM tasks WHERE user_id = 1');
-    res.json(result.rows);
+    const client = await (await pool).connect(); // Await the pool promise
+    const result = await client.query('SELECT * FROM tasks');
+    res.status(200).json(result.rows);
+    client.release();
   } catch (error) {
     console.error('Error fetching tasks:', error);
-    res.status(500).json({ message: 'Internal server error', error: error });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -31,7 +24,8 @@ export const createTask = async (req: AuthRequest, res: Response): Promise<void>
 
   const { title, description } = req.body;
   const userId = req.user.id;
-  const result = await pool.query(
+  const client = await (await pool).connect(); // Await the pool promise
+    const result = await client.query(
     'INSERT INTO tasks (title, description, user_Id) VALUES ($1, $2, $3) RETURNING *',
     [title, description, userId]
   );
@@ -47,7 +41,8 @@ export const updateTask = async (req: AuthRequest, res: Response): Promise<void>
   const { id } = req.params;
   console.log(req.body)
   const { title, description, is_complete } = req.body;
-  const result = await pool.query(
+  const client = await (await pool).connect(); // Await the pool promise
+  const result = await client.query(
     'UPDATE tasks SET title = $1, description = $2, is_complete = $3 WHERE id = $4 RETURNING *',
     [title, description, is_complete, id]
   );
@@ -61,6 +56,7 @@ export const deleteTask = async (req: AuthRequest, res: Response): Promise<void>
   }
 
   const { id } = req.params;
-  await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+  const client = await (await pool).connect(); // Await the pool promise
+  const result = await client.query('DELETE FROM tasks WHERE id = $1', [id]);
   res.json({ message: 'Task deleted' });
 };

@@ -17,8 +17,8 @@ const resolveHostToIPv4 = (hostname: string): Promise<string> => {
   });
 };
 
-// Create the database pool
-const createPool = async () => {
+// Create and initialize the pool
+const initializePool = async (): Promise<Pool> => {
   try {
     const hostname = 'db.jniuqtxxemrvjnpbhopt.supabase.co';
     const ipv4Address = await resolveHostToIPv4(hostname);
@@ -39,20 +39,16 @@ const createPool = async () => {
     });
 
     // Test the connection
-    pool.query('SELECT NOW()', (err, res) => {
-      if (err) {
-        console.error('Database connection error:', err);
-      } else {
-        console.log('Database connected successfully:', res.rows[0]);
-      }
-    });
+    await pool.query('SELECT NOW()');
+    console.log('Database connected successfully');
 
     return pool;
   } catch (error) {
-    console.error('Error creating database pool:', error);
+    console.error('Error initializing database pool:', error);
     throw error;
   }
 };
 
-// Export the pool as a promise
-export const pool = createPool();
+// Initialize the pool and export it
+const pool = initializePool();
+export { pool };
