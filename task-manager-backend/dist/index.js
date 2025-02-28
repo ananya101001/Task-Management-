@@ -10,7 +10,7 @@ const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json()); // Add this line to parse JSON bodies
 app.use((0, cors_1.default)({
-    origin: ['https://task-management-lemon-xi.vercel.app/', 'http://localhost:3000'],
+    origin: 'https://task-management-rho-teal.vercel.app',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

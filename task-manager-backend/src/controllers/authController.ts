@@ -35,10 +35,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   try {
+    
     // Check if the user exists in the database
     const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     const user = result.rows[0];
-
+    
     if (!user) {
       res.status(401).json({ message: 'Username not found' });
       return;
