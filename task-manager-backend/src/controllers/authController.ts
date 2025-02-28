@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert the new user into the database
-    const result = await client.query(
+    const result = await pool.query(
       'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *',
       [username, hashedPassword]
     );
@@ -36,10 +36,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const { username, password } = req.body;
 
   try {
-    const resolvedPool = await pool;
-    const client = await resolvedPool.connect();
+    
     // Check if the user exists in the database
-    const result = await client.query('SELECT * FROM users WHERE username = $1', [username]);
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     const user = result.rows[0];
     
     if (!user) {
